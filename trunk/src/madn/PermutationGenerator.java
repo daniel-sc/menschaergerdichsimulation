@@ -169,10 +169,10 @@ public static int[] permute(int[] objects, int[] permutation) {
 	if(objects.length!=permutation.length)
 		throw new IllegalArgumentException("Arguments length must match!");
 	
-	int backup[] = objects.clone();
+	int result[] = objects.clone();
 	for(int i=0; i<objects.length; i++)
-		objects[permutation[i]] = backup[i];
-	return objects;
+		result[permutation[i]] = objects[i];
+	return result;
 }
 
 public static int[] invert(int[] oldperm) {
