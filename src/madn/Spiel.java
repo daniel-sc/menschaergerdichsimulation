@@ -5,6 +5,7 @@ public class Spiel {
 	Spielfeld feld2; //sicherheitsfeld dass den spielern uebergeben wird.
 	int anzTeams;// = 4; //kann spaeter angepasst werden
 	Team teams[];
+	Team teams_org[]; //bakup fuer rotation
 	int naechster = 0; //es startet spieler 0
 	Boolean ende = false;
 	int aktWurf = 0;
@@ -54,6 +55,7 @@ public class Spiel {
 			System.out.println("ERROR 48");
 		break;
 		}
+		teams_org = teams;
 	}
 	
 	void reset() {
@@ -67,6 +69,20 @@ public class Spiel {
 		if(permutation.length!=anzTeams)
 			throw new IllegalArgumentException("Permutation muss die gleiche lange wie die Anzahl der Teams haben!");
 		teams = PermutationGenerator.permute(teams,permutation);
+		for(int i=0; i<anzTeams; i++)
+			teams[i].setTeamNr(i);
+		reset();
+	}
+	/**
+	 * permutation auf die 1. aufstellung
+	 * @param permutation
+	 */
+	void permutiere(int permutation[]) {
+		if(permutation.length!=anzTeams)
+			throw new IllegalArgumentException("Permutation muss die gleiche lange wie die Anzahl der Teams haben!");
+		teams = PermutationGenerator.permute(teams_org,permutation);
+		for(int i=0; i<anzTeams; i++)
+			teams[i].setTeamNr(i);
 		reset();
 	}
 	

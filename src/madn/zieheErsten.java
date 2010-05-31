@@ -14,6 +14,8 @@ public class zieheErsten implements Team {
 		Set<Zug> zuege = feld.moeglicheZuege(teamNr, aktWurf);
 		int erstePos = -1;
 		for (Zug zug : zuege) {
+			if(zug.schlagen) //zur Zeit egal wo geschlagen wird
+				return zug;
 			if(zug.ziel>erstePos)
 				erstePos = zug.ziel;
 		}

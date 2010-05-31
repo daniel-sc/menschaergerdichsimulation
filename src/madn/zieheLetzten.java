@@ -14,6 +14,8 @@ public class zieheLetzten implements Team {
 		Set<Zug> zuege = feld.moeglicheZuege(teamNr, aktWurf);
 		int letztePos = 200;
 		for (Zug zug : zuege) {
+			if(zug.schlagen) //zur Zeit egal wo geschlagen wird
+				return zug;
 			if(zug.ziel<letztePos)
 				letztePos = zug.ziel;
 		}

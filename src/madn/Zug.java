@@ -12,32 +12,22 @@ public class Zug {
 	boolean schlagen;
 	int teamGeschlagen;
 	
+	/**
+	 * kann nicht erlaubte zuege erstellen!
+	 * @param wurf
+	 * @param team
+	 * @param figur
+	 * @param feld
+	 */
 	public Zug(int wurf, int team, int figur, Spielfeld feld) {
 		this.team = team;
 		this.figur = figur;
 		this.wurf = wurf;
 		
 		start = feld.figuren[team][figur];
-		if(start==-1)
-			if(wurf==6)
-				ziel = feld.startfeld[team];
-			else
-				ziel = -1;
-		else
-			if(start>100)
-				if(start+wurf<=104)
-					ziel = start+wurf;
-				else
-					ziel = start;
-			else
-				if(feld.startfeld[team]==start || (feld.startfeld[team]-start+40)%40>wurf) //nicht ins haeuschen
-					ziel = start+wurf;
-				else
-					if(((-feld.startfeld[team]+start+wurf+40)%40)+1>4)
-						ziel = start;
-					else
-						ziel = 100+((-feld.startfeld[team]+start+wurf+40)%40)+1;
-		schlagen = (ziel>=0 && ziel<100 ? feld.spielfeld_team[ziel] != -1 : false);
+		ziel = Spielfeld.getZiel(start, wurf, team);
+
+		schlagen = (ziel>=0 && ziel<40 ? feld.spielfeld_team[ziel] != -1 : false);
 		teamGeschlagen = schlagen ? feld.spielfeld_team[ziel] : -1;				
 		
 	}
@@ -54,7 +44,17 @@ public class Zug {
 			+10000000*teamGeschlagen
 			+100000000*(schlagen ? 1 : 0);
 	}
-
+	
+	/**
+	 * kann nicht erlaubte zuege erstellen!
+	 * @param wurf
+	 * @param team
+	 * @param figur
+	 * @param start
+	 * @param ziel
+	 * @param schlagen
+	 * @param teamGeschlagen
+	 */
 	public Zug(int wurf, int team, int figur, int start, int ziel,
 			boolean schlagen, int teamGeschlagen) {
 		super();

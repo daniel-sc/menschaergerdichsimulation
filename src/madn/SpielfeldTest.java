@@ -24,12 +24,26 @@ public class SpielfeldTest extends TestCase {
 		int from[] = perm.getNext();
 		perm.getNext();
 		int to[] = perm.getNext();
+		int to_bak[] = to.clone();
 		int diff[] = PermutationGenerator.difference(from, to);
 		for(int i=0; i<4; i++) {
 			assertEquals(diff[from[i]], to[i]);
 			assertEquals(PermutationGenerator.permute(to,PermutationGenerator.invert(to))[i], i);
 			assertEquals(PermutationGenerator.permute(PermutationGenerator.invert(to),to)[i], i);
 		}
+		
+		PermutationGenerator.permute(to, to);
+		for(int i=0; i<4; i++) {
+			assertEquals(to_bak[i], to[i]);
+		}
+		
+//		perm.reset();
+//		while(perm.hasMore()) {
+//			int p[] = perm.getNext();
+//			for(int i=0; i<p.length; i++)
+//				System.out.print(""+p[i]);
+//			System.out.println();
+//		}
 		
 	}
 	
@@ -81,18 +95,32 @@ public class SpielfeldTest extends TestCase {
 		assertEquals(feld.anzSpielerImStart(2),4);
 		assertEquals(feld.anzSpielerImStart(3),4);
 		
-		feld.zieheSpieler(0, 1, 6);
-		for(int i=0; i<50; i++)
-			feld.zieheSpieler(0, 1, 1);
-		feld.zieheSpieler(0, 2, 6);
-		for(int i=0; i<50; i++)
-			feld.zieheSpieler(0, 2, 1);
-		feld.zieheSpieler(0, 3, 6);
-		assertEquals(feld.ende(), -1);
-		for(int i=0; i<50; i++)
-			feld.zieheSpieler(0, 3, 1);
+		assertTrue(feld.zieheSpieler(1, 0, 6));
+		assertTrue(feld.zieheSpieler(1, 0, 5));
+		assertTrue(feld.zieheSpieler(1, 0, 5));
+		assertTrue(feld.zieheSpieler(1, 0, 5));
+		assertTrue(feld.zieheSpieler(1, 0, 5));
+		assertTrue(feld.zieheSpieler(1, 0, 5));
+		assertTrue(feld.zieheSpieler(1, 0, 5));
+		assertTrue(feld.zieheSpieler(1, 0, 5));
+		assertTrue(feld.spielfeld_team[5]==1);
+		assertTrue(feld.zieheSpieler(1, 0, 4));
+		assertFalse(feld.zieheSpieler(1, 0, 5));
+		assertTrue(feld.zieheSpieler(1, 0, 4));
 		
-		assertEquals(feld.ende(), 0);
+		feld.zieheSpieler(1, 1, 6);
+		for(int i=0; i<50; i++)
+			feld.zieheSpieler(1, 1, 1);
+		feld.zieheSpieler(1, 2, 6);
+		for(int i=0; i<50; i++)
+			feld.zieheSpieler(1, 2, 1);
+		feld.zieheSpieler(1, 3, 6);
+		assertEquals(feld.ende(), -1);
+		for(int i=0; i<40; i++)
+			feld.zieheSpieler(1, 3, 1);
+		System.out.println(feld.ende());
+		assertEquals(feld.ende(), 1);
+		assertEquals(feld.anzSpielerImHaus(1), 4);
 		
 		HashSet<Integer> set = new HashSet<Integer>(4);
 		set.add(5);
