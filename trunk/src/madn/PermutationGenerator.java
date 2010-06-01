@@ -6,6 +6,8 @@ package madn;
 //from: http://www.merriampark.com/perm.htm
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PermutationGenerator {
 
@@ -145,33 +147,32 @@ public class PermutationGenerator {
 
 /**
  * 
+ * @param <E>
  * @param <E> type of objects
  * @param objects
  * @param permutation
  * @return the permutation of the objects
  */
-public static <E> E[] permute(E[] objects, int[] permutation) {
-	if(objects.length!=permutation.length)
+public static <E> List<E> permute(List<E> objects, int[] permutation) {
+	if(objects.size()!=permutation.length)
 		throw new IllegalArgumentException("Arguments length must match!");
 	
-	E backup[] = objects.clone();
-	for(int i=0; i<objects.length; i++)
-		objects[permutation[i]] = backup[i];
-	return objects;
+	//E result[] = objects.clone();
+	List<E> result = new ArrayList<E>(objects);
+	for(int i=0; i<objects.size(); i++)
+		result.set(permutation[i], objects.get(i));
+	return result;
 }
-/**
- * copy to use permute(E[],int) easily to permute permutations (which are 'int' not 'Integer')
- * @param objects
- * @param permutation
- * @return
- */
-public static int[] permute(int[] objects, int[] permutation) {
-	if(objects.length!=permutation.length)
+
+
+public static int[] compose(int[] firstPerm, int[] lastPerm) {
+	if(firstPerm.length!=lastPerm.length)
 		throw new IllegalArgumentException("Arguments length must match!");
 	
-	int result[] = objects.clone();
-	for(int i=0; i<objects.length; i++)
-		result[permutation[i]] = objects[i];
+	int result[] = new int[firstPerm.length];
+	for(int i=0; i<result.length; i++) {
+		result[i] = lastPerm[firstPerm[i]];
+	}
 	return result;
 }
 
@@ -181,6 +182,13 @@ public static int[] invert(int[] oldperm) {
 		result[oldperm[i]] = i;
 	}
 	return result;
+}
+
+public static void print(String pre, int[] perm) {
+	System.out.print(pre+"\t");
+	for(int i=0; i<perm.length; i++)
+		System.out.print(perm[i]);
+	System.out.println();
 }
 
 }
