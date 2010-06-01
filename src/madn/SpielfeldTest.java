@@ -1,6 +1,8 @@
 package madn;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import junit.framework.TestCase;
@@ -20,19 +22,62 @@ public class SpielfeldTest extends TestCase {
 		super.tearDown();
 	}
 	
+	public void testPermute() {
+		ArrayList<String> test = new ArrayList<String>();
+		test.add("a");
+		test.add("b");
+		test.add("c");
+		test.add("d");
+		
+		ArrayList<String> result = new ArrayList<String>();
+		result.add("b");
+		result.add("a");
+		result.add("c");
+		result.add("d");
+		System.out.println("test.size="+test.size());
+		List<String> permTest = PermutationGenerator.permute(test, new int[]{1,0,2,3});
+		for(int i=0; i<permTest.size(); i++) {
+			assertEquals(permTest.get(i), result.get(i));
+			System.out.println(permTest.get(i));
+		}
+	}
+	
+	public void testPerm2(){
+		perm.getNext();
+		perm.getNext();
+		perm.getNext();
+		perm.getNext();
+		int myperm[] = perm.getNext();
+		int myinv[] = PermutationGenerator.invert(myperm);
+		int myprod1[] = PermutationGenerator.compose(myperm, myinv);
+		int myprod2[] = PermutationGenerator.compose(myinv, myperm);
+		for(int i=0; i<4; i++) {
+			assertEquals(myprod1[i], i);
+			assertEquals(myprod2[i], i);
+		}
+		PermutationGenerator.print("perm", myperm);
+		PermutationGenerator.print("inv", myinv);
+		int perm2[] = new int[]{1,0,2,3};
+		PermutationGenerator.print("p2*p1", PermutationGenerator.compose(myperm, perm2));
+		PermutationGenerator.print("p1*p2", PermutationGenerator.compose(perm2, myperm));
+		
+	}
+	
 	public void testPerm() {
 		int from[] = perm.getNext();
+		perm.getNext();
 		perm.getNext();
 		int to[] = perm.getNext();
 		int to_bak[] = to.clone();
 		int diff[] = PermutationGenerator.difference(from, to);
 		for(int i=0; i<4; i++) {
 			assertEquals(diff[from[i]], to[i]);
-			assertEquals(PermutationGenerator.permute(to,PermutationGenerator.invert(to))[i], i);
-			assertEquals(PermutationGenerator.permute(PermutationGenerator.invert(to),to)[i], i);
+			assertEquals(PermutationGenerator.compose(diff,from)[i], to[i]);
+			assertEquals(PermutationGenerator.compose(to,PermutationGenerator.invert(to))[i], i);
+			assertEquals(PermutationGenerator.compose(PermutationGenerator.invert(to),to)[i], i);
 		}
 		
-		PermutationGenerator.permute(to, to);
+		PermutationGenerator.compose(to, to);
 		for(int i=0; i<4; i++) {
 			assertEquals(to_bak[i], to[i]);
 		}

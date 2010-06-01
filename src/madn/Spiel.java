@@ -1,19 +1,21 @@
 package madn;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Spiel {
 	Spielfeld feld;
 	Spielfeld feld2; //sicherheitsfeld dass den spielern uebergeben wird.
 	int anzTeams;// = 4; //kann spaeter angepasst werden
-	Team teams[];
-	Team teams_org[]; //bakup fuer rotation
+	List<Team> teams;
+	List<Team> teams_org; //bakup fuer rotation
 	int naechster = 0; //es startet spieler 0
 	Boolean ende = false;
 	int aktWurf = 0;
 
 	/**
 	 * Die parameter sind die Klassennamen der teams (fuer class.forName)
-	 * bis auf den 1. Parameter koennen leere Strings uebergeben werden
-	 * alle teams nach dem ersten leeren parameter werden ignoriert.
+	 * alle parameter muessen gesetzt werden. Fuer keinen Spieler: {@link madn.dummyTeam}
 	 * @param team1
 	 * @param team2
 	 * @param team3
@@ -35,42 +37,46 @@ public class Spiel {
 
 		feld = new Spielfeld();
 		feld2 = new Spielfeld();
-		teams = new Team[anzTeams];
+		teams = new ArrayList<Team>(anzTeams);
 
 		switch (anzTeams) {
 		case 4:
-			teams[3] = (Team) Class.forName(team4).newInstance(); 
-			teams[3].setTeamNr(3);
+			teams.add(0, (Team) Class.forName(team4).newInstance());
+			teams.get(0).setTeamNr(3);
 		case 3:
-			teams[2] = (Team) Class.forName(team3).newInstance();
-			teams[2].setTeamNr(2);
+			teams.add(0, (Team) Class.forName(team3).newInstance());
+			teams.get(0).setTeamNr(2);
 		case 2:
-			teams[1] = (Team) Class.forName(team2).newInstance();
-			teams[1].setTeamNr(1);
+			teams.add(0, (Team) Class.forName(team2).newInstance());
+			teams.get(0).setTeamNr(1);
 		case 1:
-			teams[0] = (Team) Class.forName(team1).newInstance();
-			teams[0].setTeamNr(0);
+			teams.add(0, (Team) Class.forName(team1).newInstance());
+			teams.get(0).setTeamNr(0);
 			break;
 		default:
 			System.out.println("ERROR 48");
 		break;
 		}
-		teams_org = teams;
+		teams_org = new ArrayList<Team>(teams);
 	}
 	
+	/**
+	 * aendert nicht die aktuelle permutation der teams!
+	 */
 	void reset() {
 		feld = new Spielfeld();
 		feld2 = new Spielfeld();
 	}
 	/**
 	 * resettet spiel und rotiert spieler
+	 * @deprecated nicht getestet!
 	 */
 	void rotiere(int permutation[]) {
 		if(permutation.length!=anzTeams)
 			throw new IllegalArgumentException("Permutation muss die gleiche lange wie die Anzahl der Teams haben!");
 		teams = PermutationGenerator.permute(teams,permutation);
 		for(int i=0; i<anzTeams; i++)
-			teams[i].setTeamNr(i);
+			teams.get(i).setTeamNr(i);
 		reset();
 	}
 	/**
@@ -82,7 +88,7 @@ public class Spiel {
 			throw new IllegalArgumentException("Permutation muss die gleiche lange wie die Anzahl der Teams haben!");
 		teams = PermutationGenerator.permute(teams_org,permutation);
 		for(int i=0; i<anzTeams; i++)
-			teams[i].setTeamNr(i);
+			teams.get(i).setTeamNr(i);
 		reset();
 	}
 	
@@ -103,7 +109,7 @@ public class Spiel {
 					}
 				} //jetzt hat das team entweder eine figur auf dem feld oder eine 6
 				feld2 = new Spielfeld(feld);
-				Zug zug = teams[naechster].ziehen(feld2,aktWurf);
+				Zug zug = teams.get(naechster).ziehen(feld2,aktWurf);
 				if(zug==null) continue; //kann/will nicht ziehen
 				zug.wurf = aktWurf; //nicht dass einer schummelt ;) (das reicht!)
 				feld.zieheSpieler(zug);
