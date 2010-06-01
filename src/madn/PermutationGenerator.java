@@ -1,9 +1,10 @@
 package madn;
 
-//--------------------------------------
-// Systematically generate permutations. 
-//--------------------------------------
-//from: http://www.merriampark.com/perm.htm
+/**
+ * Systematically generate permutations.
+ * Contains helper methods.
+ * from: http://www.merriampark.com/perm.htm
+ */
 
 import java.math.BigInteger;
 import java.util.ArrayList;

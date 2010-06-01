@@ -1,5 +1,11 @@
 package madn;
 
+/**
+ * beschreibt einen Zug auf einem {@link Spielfeld}.
+ * Der Zug muss nicht korrekt/konsistent sein!
+ * @author daniel
+ *
+ */
 public class Zug {
 	
 	int wurf;

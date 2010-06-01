@@ -5,6 +5,11 @@ import java.util.Set;
 
 
 
+/**
+ * beschreibt das Spielfeld mit den Positionen der Figuren.
+ * @author daniel
+ *
+ */
 public class Spielfeld {
 
 	int spielfeld_team[] = new int[40]; //belegte felder haben teamnr, sonst -1
@@ -17,6 +22,10 @@ public class Spielfeld {
 
 	static int startfeld[] = new int[]{0,10,20,30};
 
+	/**
+	 * erstellt eine Kopie des Spielfeldes 'feld'.
+	 * @param feld
+	 */
 	public Spielfeld(Spielfeld feld) {
 		super();
 		for(int i=0; i<40; i++) {
@@ -32,6 +41,7 @@ public class Spielfeld {
 		}
 	}
 
+	
 	public Spielfeld() {
 		for(int i=0; i<anzTeams; i++) {
 			for(int k=0; k<4; k++) {
@@ -46,7 +56,7 @@ public class Spielfeld {
 	}
 	
 	/**
-	 * 
+	 * fuert den zug auf dem Spielfeld aus. Inkl schlagen von Figuren.
 	 * @param team
 	 * @param figur
 	 * @param wurf
@@ -101,7 +111,8 @@ public class Spielfeld {
 	 * @param start
 	 * @param wurf
 	 * @param team
-	 * @return das feld auf dem die figur landen wuerde ohne mitspieler zu beachten. -1:start, 10X:ziel
+	 * @return das feld auf dem die figur landen wuerde ohne 
+	 * mitspieler zu beachten. -1:start, 10X:ziel
 	 */
 	public static int getZiel(int start, int wurf, int team) {
 		if(start==-1)

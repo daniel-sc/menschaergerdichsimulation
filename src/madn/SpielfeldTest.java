@@ -7,8 +7,11 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
-public class SpielfeldTest extends TestCase {
-	
+/**
+ * Verschiedene unsystematische Tests
+ * @author daniel
+ */
+public class SpielfeldTest extends TestCase { 
 	Spielfeld feld;
 	PermutationGenerator perm;
 
