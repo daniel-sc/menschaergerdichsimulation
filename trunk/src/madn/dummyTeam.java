@@ -4,8 +4,10 @@
 package madn;
 
 /**
+ * Team dass NICHT zieht.
+ * Kann insbesondere genutzt werden wenn mit weniger Teams gespielt
+ * werden soll.
  * @author daniel
- *
  */
 public class dummyTeam implements Team {
 

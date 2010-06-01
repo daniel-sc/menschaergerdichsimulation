@@ -3,6 +3,13 @@ package madn;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Steht fuer ein Mensch aerger dich nicht Spiel.
+ * Kann mehrere Spiele durchfuehren via {@link #reset()} bzw {@link #rotiere(int[])}.
+ * 
+ * @author daniel
+ *
+ */
 public class Spiel {
 	Spielfeld feld;
 	Spielfeld feld2; //sicherheitsfeld dass den spielern uebergeben wird.
@@ -93,7 +100,8 @@ public class Spiel {
 	}
 	
 	/** 
-	 * gibt teamnr des gewinners zurueck
+	 * gibt teamnr des gewinners zurueck.
+	 * gibt nr des permutierten teams zurueck!
 	 * @return
 	 */
 	int simuliereSpiel() {

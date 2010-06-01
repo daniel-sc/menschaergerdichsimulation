@@ -1,5 +1,10 @@
 package madn;
 
+/**
+ * fuehrt (viele) Simulationen von Spielen durch. 
+ * @author daniel
+ *
+ */
 public class Simulation {
 
 	/**
@@ -10,7 +15,7 @@ public class Simulation {
 	 */
 	public static void main(String[] args) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 
-		String teams[] = new String[]{"madn.dummyTeam","madn.zieheLetzten","madn.zieheErsten","madn.zieheLetzten"};
+		String teams[] = new String[]{"madn.zieheErsten","madn.zieheLetzten","madn.zieheErsten","madn.zieheLetzten"};
 
 		int gewinne[] = doSimulation(teams, 100);
 

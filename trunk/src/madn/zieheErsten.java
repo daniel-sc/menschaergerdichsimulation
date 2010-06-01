@@ -2,13 +2,15 @@ package madn;
 
 import java.util.Set;
 
+/**
+ * naiver Spieler, der wenn kein Spieler zu schlagen ist immer den
+ * vorderst moeglichsten Spieler zieht. Ansonsten wird ein nicht 
+ * definierter Spieler geschlagen.
+ * @author daniel
+ */
 public class zieheErsten implements Team {
 
 	int teamNr = -1;
-
-	public zieheErsten() {
-		
-	}
 	
 	public Zug ziehen(Spielfeld feld, int aktWurf) {
 		Set<Zug> zuege = feld.moeglicheZuege(teamNr, aktWurf);
