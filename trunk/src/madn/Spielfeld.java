@@ -57,14 +57,23 @@ public class Spielfeld {
 	
 	/**
 	 * fuert den zug auf dem Spielfeld aus. Inkl schlagen von Figuren.
-	 * @param team
-	 * @param figur
-	 * @param wurf
-	 * @return false, falls der zug nicht moeglich war. true sonst.
+	 * Es <b>muss</b> gezogen werden, d.h. wenn ein inkorrekter zug
+	 * uebergeben wurden und ein zug moeglich ist wird eine beliebige figur
+	 * gezogen.
+	 * @param zug
+	 * @return false, falls der zug nicht moeglich war (bel. zug!). true sonst.
 	 */
 	public Boolean zieheSpieler(Zug zug) {
 		Set<Zug> moeglicheZuege = moeglicheZuege(zug.team, zug.wurf);
-		if(!moeglicheZuege.contains(zug)) return false;
+		if(!moeglicheZuege.contains(zug)) {
+			if(moeglicheZuege.size()>0) {
+				zieheSpieler(moeglicheZuege.iterator().next());
+				return false;
+			} else { //es ist eh kein zug moeglich
+				return true;
+			}
+			
+		}
 		//zug ist moeglich!
 
 		if(zug.ziel>100) { //wenn figur im haeuschen

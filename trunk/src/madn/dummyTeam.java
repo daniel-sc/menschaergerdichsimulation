@@ -8,6 +8,7 @@ package madn;
  * Kann insbesondere genutzt werden wenn mit weniger Teams gespielt
  * werden soll.
  * @author daniel
+ * @deprecated es muss gezogen werden!
  */
 public class dummyTeam implements Team {
 
