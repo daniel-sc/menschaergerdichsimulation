@@ -118,7 +118,9 @@ public class Spiel {
 				} //jetzt hat das team entweder eine figur auf dem feld oder eine 6
 				feld2 = new Spielfeld(feld);
 				Zug zug = teams.get(naechster).ziehen(feld2,aktWurf);
-				if(zug==null) continue; //kann/will nicht ziehen
+				if(zug==null) { //kann/will nicht ziehen
+					zug = new Zug(aktWurf, naechster, 0, feld); //erstelle beliebigen zug mit korrekter wurf und team zahl
+				}
 				zug.wurf = aktWurf; //nicht dass einer schummelt ;) (das reicht!)
 				feld.zieheSpieler(zug);
 				

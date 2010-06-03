@@ -15,7 +15,10 @@ public class Simulation {
 	 */
 	public static void main(String[] args) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 
-		String teams[] = new String[]{"madn.zieheErsten","madn.zieheLetzten","madn.zieheErsten","madn.zieheLetzten"};
+		String teams[] = new String[]{"madn.zieheErsten",
+				"madn.zieheLetzten",
+				"madn.zieheErsten",
+				"madn.dummyTeam"};
 
 		int gewinne[] = doSimulation(teams, 100);
 
@@ -31,25 +34,38 @@ public class Simulation {
 
 	/**
 	 * fuehrt anz spiel-simulationen aus, dabei besteht eine Simulation
-	 * aus 24 spielen, damit alle startpositionen durchlaufen werden.
-	 * Es werden somit 24*anz Spiele simuliert!
-	 * @param teams
-	 * @param anznex
+	 * aus teams.length! spielen, damit alle startpositionen durchlaufen werden.
+	 * Es werden somit teams.lenght!*anz Spiele simuliert!
+	 * @param teams Array mit den klassennamen der teams. 0 < laenge < 5.
+	 * Eintraege nach dem ersten leerstring werden ignoriert.
+	 * @param anz
 	 * @return result[i] = gewinne von team i
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
 	 * @throws ClassNotFoundException
 	 */
 	static int[] doSimulation(String teams[], int anz) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-		if(teams.length!=4)
-			throw new IllegalArgumentException("Es muessen 4 teams uebergeben werden!");
+		int anzTeams = 0;
+		String teams_neu[] = new String[4];
+		for(int i=0; i<4; i++)
+			teams_neu[i] = "";
+		
+		for(int i=0; i<Math.min(4, teams.length); i++)
+			if( teams[i].length() > 0 ) {
+				anzTeams++;
+				teams_neu[i] = teams[i];
+			}
+			else
+				break;
+		
+		
+		
+		Spiel spiel = new Spiel(teams_neu[0],teams_neu[1],teams_neu[2],teams_neu[3]);
 
-		Spiel spiel = new Spiel(teams[0],teams[1],teams[2],teams[3]);
-
-		int gewinne[] = new int[4];
+		int gewinne[] = new int[anzTeams];
 		int aktGewinner;
 
-		PermutationGenerator perm = new PermutationGenerator(teams.length);
+		PermutationGenerator perm = new PermutationGenerator(anzTeams);
 		int nextperm[];
 		int inv[];
 
