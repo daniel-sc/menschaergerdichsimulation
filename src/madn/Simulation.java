@@ -1,5 +1,8 @@
 package madn;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * fuehrt (viele) Simulationen von Spielen durch. 
  * @author daniel
@@ -43,24 +46,36 @@ public class Simulation {
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
 	 * @throws ClassNotFoundException
+	 * @see {@link #doSimulation(List, int)}
 	 */
 	static int[] doSimulation(String teams[], int anz) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-		int anzTeams = 0;
-		String teams_neu[] = new String[4];
-		for(int i=0; i<4; i++)
-			teams_neu[i] = "";
+		ArrayList<Team> teams_neu = new ArrayList<Team>(teams.length);
 		
 		for(int i=0; i<Math.min(4, teams.length); i++)
 			if( teams[i].length() > 0 ) {
-				anzTeams++;
-				teams_neu[i] = teams[i];
+				teams_neu.add(i, (Team) Class.forName(teams[i]).newInstance());
 			}
 			else
 				break;
 		
 		
 		
-		Spiel spiel = new Spiel(teams_neu[0],teams_neu[1],teams_neu[2],teams_neu[3]);
+		return doSimulation(teams_neu, anz);
+	}
+	
+	/**
+	 * fuehrt anz spiel-simulationen aus, dabei besteht eine Simulation
+	 * aus teams.size()! spielen, damit alle startpositionen durchlaufen werden.
+	 * Es werden somit teams.size()!*anz Spiele simuliert!
+	 * @param teams
+	 * @param anz
+	 * @return result[i] = gewinne von team.get(i)
+	 */
+	static int[] doSimulation(List<Team> teams, int anz) {
+		int anzTeams = teams.size();	
+		
+		
+		Spiel spiel = new Spiel(teams);
 
 		int gewinne[] = new int[anzTeams];
 		int aktGewinner;
@@ -73,7 +88,7 @@ public class Simulation {
 			nextperm = perm.getNext();
 			inv = PermutationGenerator.invert(nextperm); 
 			spiel.permutiere(nextperm);
-			for(int i=0; i<100; i++) {
+			for(int i=0; i<anz; i++) {
 				spiel.reset();
 				aktGewinner = spiel.simuliereSpiel();
 				
@@ -86,4 +101,5 @@ public class Simulation {
 		System.out.println();
 		return gewinne;
 	}
+
 }

@@ -19,6 +19,24 @@ public class Spiel {
 	int naechster = 0; //es startet spieler 0
 	Boolean ende = false;
 	int aktWurf = 0;
+	
+	/**
+	 * erzeugt spiel mit maximal 4 teams.
+	 * @param teams2
+	 */
+	Spiel(List<Team> teams2) {
+		if(teams2==null || teams2.size()==0 || teams2.size()>4)
+			throw new IllegalArgumentException("es muss zwischen 1 und 4 teams uebergeben werden!");
+		
+		anzTeams = teams2.size();
+		feld = new Spielfeld();
+		feld2 = new Spielfeld();
+		teams = new ArrayList<Team>(teams2);
+		for(int i=0; i<anzTeams; i++) {
+			teams.get(i).setTeamNr(i);
+		}
+		teams_org = new ArrayList<Team>(teams);
+	}
 
 	/**
 	 * Die parameter sind die Klassennamen der teams (fuer class.forName)
@@ -30,6 +48,7 @@ public class Spiel {
 	 * @throws ClassNotFoundException 
 	 * @throws IllegalAccessException 
 	 * @throws InstantiationException 
+	 * @deprecated {@link #Spiel(Team[])} benutzen!
 	 */
 	Spiel(String team1, String team2, String team3, String team4) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		anzTeams = 4;
