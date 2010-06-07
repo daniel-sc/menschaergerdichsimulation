@@ -1,0 +1,14 @@
+#summary aktuelle Spielregeln
+#labels Featured
+
+= Introduction =
+
+Es wird nach folgenden Spielregeln gespielt:
+
+
+= Details =
+
+1) Falls möglich muss eine Figur gezogen werden (anderfalls wird automatisch eine beliebige Figur gezogen)
+2) Es muss nicht geschlagen werden - kann aber natürlich.
+4) Es kann nicht rückwärts geschlagen werden.
+3) Im 'Häuschen' kann nicht übersprungen werden.
