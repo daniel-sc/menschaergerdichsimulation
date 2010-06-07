@@ -8,7 +8,7 @@ Es wird nach folgenden Spielregeln gespielt:
 
 = Details =
 
-  # Falls möglich muss eine Figur gezogen werden (anderfalls wird automatisch eine beliebige Figur gezogen)
+  # Falls möglich muss eine Figur gezogen werden (andernfalls wird automatisch eine beliebige Figur gezogen)
   # Es muss nicht geschlagen werden - kann aber natürlich.
   # Es kann nicht rückwärts geschlagen werden.
   # Im 'Häuschen' kann nicht übersprungen werden.
