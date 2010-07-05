@@ -12,3 +12,4 @@ Es wird nach folgenden Spielregeln gespielt:
   # Es muss nicht geschlagen werden - kann aber natürlich.
   # Es kann nicht rückwärts geschlagen werden.
   # Im 'Häuschen' kann nicht übersprungen werden.
+  # Bei einer 6 muss wenn möglich eine Figur auf das Spielfeld gebracht werden, falls der Platz belegt muss die erste mögliche Figur gezogen werden.
