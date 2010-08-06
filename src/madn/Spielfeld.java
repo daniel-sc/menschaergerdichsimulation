@@ -12,11 +12,14 @@ import java.util.Set;
  */
 public class Spielfeld {
 
-	int spielfeld_team[] = new int[40]; //belegte felder haben teamnr, sonst -1
-	int spielfeld_figur[] = new int[40]; //belegte felder haben figurnr, sonst -1
+	/** belegte felder haben teamnr, sonst -1 */
+	int spielfeld_team[] = new int[40];
+	/** belegte felder haben figurnr, sonst -1 */
+	int spielfeld_figur[] = new int[40];
 
 	int anzTeams = 4; //kann spaeter angepasst werden
-	int figuren[][] = new int[anzTeams][4]; //feldpositionen der figuren, -1:start 10X:haus
+	/** feldpositionen der figuren, -1:start 10X:haus */
+	int figuren[][] = new int[anzTeams][4]; 
 
 	int haeuschen[][] = new int[anzTeams][4];
 
@@ -248,6 +251,49 @@ public class Spielfeld {
 			}
 		}
 		return ergebnis;
+	}
+	
+	/**
+	 * gibt die Anzahl der Felder zurueck, die zwischen der gegebenen Position pos und dem
+	 * ersten Gegenspielerfigur 'rueckwaerts' liegen. Diese Figur wird nur gezaehlt wenn
+	 * sie die gegebene Postion (theoretisch) erreichen kann, dh sie zaehlt nicht wenn sie
+	 * vor dem eigenen Haeuschen steht. Wenn keine Figur da ist wird {@link Integer#MAX_VALUE}
+	 * zurueckgegeben.
+	 * @param pos - 0<=pos<40
+	 * @param team
+	 * @return
+	 */
+	public int entfernungGegenspieler(int pos, int team) {
+		if(pos<0 || pos>=100)
+			return Integer.MAX_VALUE;
+		int aktpos = (pos-1+40)%40;
+		while(aktpos!=pos) {
+			if(spielfeld_team[aktpos]>=0 && spielfeld_team[aktpos]!=team) {
+				//check ob das hauschen der figur dazwischen liegt:
+				int gegnerteam = spielfeld_team[aktpos];
+				if(distanz(aktpos,startfeld[gegnerteam])>distanz(aktpos,pos)) {
+					return distanz(aktpos,pos);
+				}
+			}
+			aktpos = (aktpos-1+40)%40;
+		}
+		return Integer.MAX_VALUE;
+	}
+	
+	/**
+	 * Anzahl der Schritte zwischen den Spielfeldern in Laufrichtung.
+	 * Zur Zeit nur fuer normale positionen auf dem Feld, dh nicht fuer Hauschen (TODO). 
+	 * Wenn von==nach, dann return 0.
+	 * @param von
+	 * @param nach
+	 * @return
+	 */
+	public static int distanz(int von, int nach) {
+		if(von==nach)
+			return 0;
+		if(nach<von)
+			nach += 40;
+		return nach-von;
 	}
 
 	/**

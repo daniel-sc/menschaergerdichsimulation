@@ -12,11 +12,18 @@ public class Zug {
 	int team;
 	int figur;
 	
+	/** haus: 10X */
 	int start;
+	/** haus: 10X */
 	int ziel;
 	
 	boolean schlagen;
 	int teamGeschlagen;
+	
+	/**
+	 * kann genutzt werden um Zuege zu werten und anschliessend den besten auszuwaehlen
+	 */
+	int punkte = 0;
 	
 	/**
 	 * kann nicht erlaubte zuege erstellen!
