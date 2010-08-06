@@ -21,7 +21,7 @@ public class Simulation {
 		String teams[] = new String[]{"madn.zieheErsten",
 				"madn.zieheLetzten",
 				"madn.zieheErsten",
-				"madn.dummyTeam"};
+				"madn.myTeam"};
 
 		int gewinne[] = doSimulation(teams, 100);
 
