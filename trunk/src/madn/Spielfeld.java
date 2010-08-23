@@ -263,7 +263,7 @@ public class Spielfeld {
 	 * @param team
 	 * @return
 	 */
-	public int entfernungGegenspieler(int pos, int team) {
+	public int entfernungGegenspielerZurueck(int pos, int team) {
 		if(pos<0 || pos>=100)
 			return Integer.MAX_VALUE;
 		int aktpos = (pos-1+40)%40;
