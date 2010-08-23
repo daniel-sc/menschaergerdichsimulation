@@ -40,9 +40,20 @@ public class myTeam implements Team {
 		for (Zug zug : zuege) {
 			if(zug.schlagen)
 				zug.punkte += 100;
+			
 			//auf jeden fall ins haus falls man evtl geschlagen wird:
-			if(zug.ziel>=100 && feld.entfernungGegenspieler(zug.start, teamNr)<7)
+			if(zug.ziel>=100 && feld.entfernungGegenspielerZurueck(zug.start, teamNr)<7)
 				zug.punkte += 1000;
+			
+			//wenn man durch ziehen aus der reichweite eines gegenspielers kommt:
+			if((feld.entfernungGegenspielerZurueck(zug.start, teamNr)<7 
+					&& feld.entfernungGegenspielerZurueck(zug.ziel, teamNr)>=7)
+					|| zug.start%10==0)
+				zug.punkte += 20;
+			
+			//je weiter vorne, je wichtiger: (Faktor?, linear??) (bringt viel :) )
+			zug.punkte += 1*Spielfeld.distanz(Spielfeld.startfeld[teamNr], zug.start);
+			
 			if(zug.ziel>erstePos)
 				erstePos = zug.ziel;
 		}
