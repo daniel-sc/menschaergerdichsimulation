@@ -8,22 +8,22 @@ package madn;
  */
 public class Zug {
 	
-	int wurf;
-	int team;
-	int figur;
+	public int wurf;
+	public int team;
+	public int figur;
 	
 	/** haus: 10X */
-	int start;
+	public int start;
 	/** haus: 10X */
-	int ziel;
+	public int ziel;
 	
-	boolean schlagen;
+	public boolean schlagen;
 	int teamGeschlagen;
 	
 	/**
 	 * kann genutzt werden um Zuege zu werten und anschliessend den besten auszuwaehlen
 	 */
-	int punkte = 0;
+	public double punkte = 100;
 	
 	/**
 	 * kann nicht erlaubte zuege erstellen!
