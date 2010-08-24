@@ -21,9 +21,9 @@ public class Simulation {
 		String teams[] = new String[]{"madn.zieheErsten",
 				"madn.zieheLetzten",
 				"madn.zieheErsten",
-				"madn.myTeam"};
+				"teams.myTeam.myTeam"};
 
-		int gewinne[] = doSimulation(teams, 100);
+		int gewinne[] = doSimulation(teams, 50);
 
 		int gesamtzahl = 0;
 		for (int i = 0; i < teams.length; i++) {
@@ -71,7 +71,7 @@ public class Simulation {
 	 * @param anz
 	 * @return result[i] = gewinne von team.get(i)
 	 */
-	static int[] doSimulation(List<Team> teams, int anz) {
+	public static int[] doSimulation(List<Team> teams, int anz) {
 		int anzTeams = teams.size();	
 		
 		

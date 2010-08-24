@@ -17,13 +17,13 @@ public class Spielfeld {
 	/** belegte felder haben figurnr, sonst -1 */
 	int spielfeld_figur[] = new int[40];
 
-	int anzTeams = 4; //kann spaeter angepasst werden
+	public int anzTeams = 4; //kann spaeter angepasst werden
 	/** feldpositionen der figuren, -1:start 10X:haus */
 	int figuren[][] = new int[anzTeams][4]; 
 
 	int haeuschen[][] = new int[anzTeams][4];
 
-	static int startfeld[] = new int[]{0,10,20,30};
+	public static int startfeld[] = new int[]{0,10,20,30};
 
 	/**
 	 * erstellt eine Kopie des Spielfeldes 'feld'.
@@ -260,7 +260,7 @@ public class Spielfeld {
 	 * vor dem eigenen Haeuschen steht. Wenn keine Figur da ist wird {@link Integer#MAX_VALUE}
 	 * zurueckgegeben.
 	 * @param pos - 0<=pos<40
-	 * @param team
+	 * @param team Nummer des eigenen Teams
 	 * @return
 	 */
 	public int entfernungGegenspielerZurueck(int pos, int team) {
@@ -278,6 +278,52 @@ public class Spielfeld {
 			aktpos = (aktpos-1+40)%40;
 		}
 		return Integer.MAX_VALUE;
+	}
+	
+	/**
+	 * gibt die Anzahl der Felder zurueck, die zwischen der gegebenen Position pos und dem
+	 * ersten Gegenspielerfigur des gegebenen Gegnerteams 'vorwaerts' liegen. Diese Figur wird nur gezaehlt wenn
+	 * sie von der gegebene Postion (theoretisch) erreicht werden kann, dh sie zaehlt nicht
+	 * wenn die eigen Figur vor dem eigenen Haeuschen steht. Wenn keine Figur da ist 
+	 * wird {@link Integer#MAX_VALUE} zurueckgegeben.
+	 * @param pos - 0<=pos<40
+	 * @param eigenes_team
+	 * @param fremdes_team
+	 * @return
+	 */
+	public int entfernungGegenspielerVorwaerts(int pos, int eigenes_team, int fremdes_team) {
+		if(pos<0 || pos>=40)
+			return Integer.MAX_VALUE;
+		int aktpos = pos;
+		while(aktpos!=startfeld[eigenes_team]) { //checke alle felder zwischen pos und startfeld
+			if(spielfeld_team[aktpos]>=0 && spielfeld_team[aktpos]==fremdes_team) {
+				return distanz(aktpos,pos);
+			}
+			aktpos = (aktpos+1+40)%40;
+		}
+		return Integer.MAX_VALUE;
+	}
+	
+	/**
+	 * gibt die Anzahl der Felder zurueck, die zwischen der gegebenen Position pos und dem
+	 * ersten Gegenspielerfigur egal welchen Gegnerteams 'vorwaerts' liegen. Diese Figur wird nur gezaehlt wenn
+	 * sie von der gegebene Postion (theoretisch) erreicht werden kann, dh sie zaehlt nicht
+	 * wenn die eigen Figur vor dem eigenen Haeuschen steht. Wenn keine Figur da ist 
+	 * wird {@link Integer#MAX_VALUE} zurueckgegeben.
+	 * @param pos - 0<=pos<40
+	 * @param eigenes_team
+	 * @return
+	 */
+	public int entfernungGegenspielerVorwaerts(int pos, int eigenes_team) {
+		int result = Integer.MAX_VALUE;
+		for(int i=0; i<anzTeams; i++) {
+			if(i!=eigenes_team) {
+				int distance = entfernungGegenspielerVorwaerts(pos, eigenes_team, i);
+				if(distance < result)
+					result = distance;
+			}
+		}
+		return result;
 	}
 	
 	/**
