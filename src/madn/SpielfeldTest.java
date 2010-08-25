@@ -180,5 +180,11 @@ public class SpielfeldTest extends TestCase {
 //	public void testSpielerImStart() {
 //		fail("Not yet implemented");
 //	}
+	
+	public void testNormalRandom() {
+		for(int i=0; i<100; i++)
+			System.out.println(new Double(teams.myTeam.myMutationOperator.getBoundedNormalRandom()));
+		System.out.println();
+	}
 
 }

@@ -15,7 +15,7 @@ public interface Team {
 	 * @param aktWurf die aktuelle wuerfelzahl
 	 * @return zug den man durchfuehren moechte oder null falls man nicht ziehen moechte/kann
 	 */
-	Zug ziehen(Spielfeld feld, int aktWurf);
+	Zug ziehen(final Spielfeld feld, int aktWurf);
 	
 	/**
 	 * muss aufgerufen werden vor dem ersten aufruf von 'ziehen'!

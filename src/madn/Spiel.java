@@ -135,8 +135,8 @@ public class Spiel {
 						if(aktWurf!=6) break;
 					}
 				} //jetzt hat das team entweder eine figur auf dem feld oder eine 6
-				feld2 = new Spielfeld(feld);
-				Zug zug = teams.get(naechster).ziehen(feld2,aktWurf);
+
+				Zug zug = teams.get(naechster).ziehen(feld,aktWurf);
 				if(zug==null) { //kann/will nicht ziehen
 					zug = new Zug(aktWurf, naechster, 0, feld); //erstelle beliebigen zug mit korrekter wurf und team zahl
 				}

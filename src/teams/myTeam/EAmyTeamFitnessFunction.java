@@ -25,8 +25,10 @@ import org.jgap.*;
  */
 public class EAmyTeamFitnessFunction extends FitnessFunction {
 	
-	/** Anzahl der Simulationen fuer jede Auswertung eines Chromosoms - ZEITKRITISCH!! */
-  private static final int ANZ_SIMULATIONEN = 20;
+	/** Anzahl der Simulationen fuer jede Auswertung eines Chromosoms - 
+	 * ZEITKRITISCH!! darf aber nicht zu klein sein, da eine einmalig
+	 * zu hohe fitness sich 'durchschleift'! */
+  static int ANZ_SIMULATIONEN = 20;
 
 /** eclipse hat gemeckert.. */
 	private static final long serialVersionUID = 1L;
@@ -38,6 +40,9 @@ public class EAmyTeamFitnessFunction extends FitnessFunction {
   
   /** das team mit dem getestet wird */
   myTeam teamEA;
+  
+  /** debug */
+  private static int iterations = 0;
    
   public EAmyTeamFitnessFunction() {
 	teamEA = new myTeam();
@@ -61,22 +66,28 @@ public class EAmyTeamFitnessFunction extends FitnessFunction {
    * @since 2.3
    */
   public double evaluate(IChromosome a_subject) {
+	 
 	  teamEA.setParameters(getParameters(a_subject));
 	  int ergebnis[] = Simulation.doSimulation(teams, ANZ_SIMULATIONEN);
-	  
+	  double gewonnen_prozent =Math.max(1, ((double)100*ergebnis[0])/(ANZ_SIMULATIONEN*24d)); 	  
 	  //max weil 0 eigentlich nur durch rundungsfehler entstehen kann..
-      return Math.max(1, 100*ergebnis[0]/(ANZ_SIMULATIONEN*24));
+      
+//	  System.out.println(iterations++ +". fitness! Age:"+a_subject.getAge()+
+//			  " fitValDir:"+a_subject.getFitnessValueDirectly()
+//			  +" berechneteFit:"+gewonnen_prozent);
+	  
+	  return gewonnen_prozent;
   }
   
   
   /**
  * @param a_potentialSolution
- * @return Die Parameter als eine int-Array
+ * @return Die Parameter als myTeamParameters
  */
-public static int[] getParameters(IChromosome a_potentialSolution) {
-	  int[] result = new int[a_potentialSolution.size()];
-	  for (int i=0; i<result.length; i++) {
-		result[i] =  (Integer) a_potentialSolution.getGene(i).getAllele();
+public static myTeamParameters getParameters(IChromosome a_potentialSolution) {
+	  myTeamParameters result = new myTeamParameters();
+	  for (int i=0; i<myTeamParameters.ANZAHL_PARAMETER; i++) {
+		  result.setParameter(i, (Double) a_potentialSolution.getGene(i).getAllele());
 	}
 	  return result;
   }

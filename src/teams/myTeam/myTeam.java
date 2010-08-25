@@ -11,41 +11,25 @@ import madn.Zug;
  * Spieler der mit Genetischen Algorithmen optimiert wird.
  * @author daniel
  */
-public class myTeam implements Team {
+public class myTeam implements Team {	
 
-	private int PKT_ERSTER =868;//83;// 10;
-	private int PKT_FAKTOR_VORNE =604;// 1;
-	private int PKT_GEGNER_UEBERHOLEN =23;// 900;
-	private int PKT_VERFOLGE_GEGNER =703;// 10;
-	private int PKT_WEG_VON_GEGENSPIELER =449;// 20;
-	private int PKT_INS_HAUS_BEI_SCHLAGRISIKO =375;// 1000;
-	private int PKT_SCHLAGEN =546;// 100;
-	
+	private myTeamParameters parameter;
 	int teamNr = -1;
-	
-	/**
-	 * setzt die parameter in folgender Reihenfolge:<br>
-	 *  PKT_ERSTER,
-	*	PKT_FAKTOR_VORNE,
-	*	PKT_GEGNER_UEBERHOLEN, 
-	*	PKT_VERFOLGE_GEGNER, 
-	*	PKT_WEG_VON_GEGENSPIELER, 
-	*	PKT_INS_HAUS_BEI_SCHLAGRISIKO, 
-	*	PKT_SCHLAGEN 
-	 * @param param
-	 */
-	public void setParameters(int param[]) {
-		if(param.length!=7)
-			System.err.println("Falsche Anzahl von Parametern!!");
-		PKT_ERSTER = param[0];
-		PKT_FAKTOR_VORNE = param[1];
-		PKT_GEGNER_UEBERHOLEN = param[2];
-		PKT_VERFOLGE_GEGNER = param[3];
-		PKT_WEG_VON_GEGENSPIELER = param[4];
-		PKT_INS_HAUS_BEI_SCHLAGRISIKO = param[5];
-		PKT_SCHLAGEN = param[6];
+
+	public myTeam() {
+		super();
+		parameter = new myTeamParameters();
 	}
-	
+
+	/**
+	 * @param param setzt die parameter auf param - macht keine Kopie,
+	 * dh wenn param spaeter geaendert wird aendern sich auch die parameter
+	 * in der Instanz!
+	 */
+	public void setParameters(myTeamParameters param) {
+		parameter = param;
+	}
+
 	/**
 	 * gibt den Zug mit den meisten {@link Zug#punkte} zurueck
 	 * @param zuege
@@ -62,29 +46,29 @@ public class myTeam implements Team {
 		}
 		return ergebnis;
 	}
-	
+
 	public Zug ziehen(Spielfeld feld, int aktWurf) {
 		Set<Zug> zuege = feld.moeglicheZuege(teamNr, aktWurf);
-		
+
 		//triviale Faelle:
 		if(zuege.size()==0) return null;
 		if(zuege.size()==1) return zuege.iterator().next();
-		
+
 		int erstePos = -1;
 		for (Zug zug : zuege) {
 			if(zug.schlagen)
-				zug.punkte += PKT_SCHLAGEN;
-			
+				zug.punkte += parameter.getSCHLAGEN();
+
 			//auf jeden fall ins haus falls man evtl geschlagen wird:
 			if(zug.ziel>=100 && feld.entfernungGegenspielerZurueck(zug.start, teamNr)<7)
-				zug.punkte += PKT_INS_HAUS_BEI_SCHLAGRISIKO;
-			
+				zug.punkte += parameter.getINS_HAUS_BEI_SCHLAGRISIKO();
+
 			//wenn man durch ziehen aus der reichweite eines gegenspielers kommt:
 			if((feld.entfernungGegenspielerZurueck(zug.start, teamNr)<7 
 					&& feld.entfernungGegenspielerZurueck(zug.ziel, teamNr)>=7)
 					|| zug.start%10==0)
-				zug.punkte += PKT_WEG_VON_GEGENSPIELER;
-			
+				zug.punkte += parameter.getWEG_VON_GEGENSPIELER();
+
 			//wenn man durch ziehen naeher an einen gegenspieler kommt (und nicht ueberholt)
 			//der schon 3 im haus hat:
 			for(int i=0; i<feld.anzTeams; i++) {
@@ -93,32 +77,33 @@ public class myTeam implements Team {
 				if(feld.anzSpielerImHaus(i)==3) {
 					int entfernung = feld.entfernungGegenspielerVorwaerts(zug.ziel, teamNr, i);
 					if(entfernung<Integer.MAX_VALUE) {
-						zug.punkte += (41-entfernung)*PKT_VERFOLGE_GEGNER;
+						zug.punkte += (41-entfernung)*parameter.getFAKTOR_VERFOLGE_GEGNER();
 					}
 				}
 			}
-			
+
 			//wenn man durch ziehen naeher an einen gegenspieler kommt und ueberholt:
 			if(feld.entfernungGegenspielerZurueck(zug.start, teamNr)>6/*TODO: oder 5?*/ 
 					&& feld.entfernungGegenspielerZurueck(zug.ziel, teamNr)<=6)
-				zug.punkte -= PKT_GEGNER_UEBERHOLEN;
-			
+				zug.punkte -= parameter.getGEGNER_UEBERHOLEN();
+
 			//je weiter vorne, je wichtiger: (Faktor?, linear??) (bringt viel :) )
-			zug.punkte += PKT_FAKTOR_VORNE*Spielfeld.distanz(Spielfeld.startfeld[teamNr], zug.start);
-			
+			zug.punkte += parameter.getFAKTOR_VORNE()*Spielfeld.distanz(Spielfeld.startfeld[teamNr], zug.start);
+
 			if(zug.ziel>erstePos)
 				erstePos = zug.ziel;
 		}
 		for (Zug zug : zuege) {
 			if(zug.ziel==erstePos)
-				zug.punkte += PKT_ERSTER;
+				zug.punkte += parameter.getERSTER();
 		}
 		return besterZug(zuege);
 	}
-	
+
 	@Override
 	public void setTeamNr(int nr) {
 		teamNr = nr;
 	}
 
 }
+
